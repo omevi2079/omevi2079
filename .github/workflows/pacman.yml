@@ -26,3 +26,5 @@ jobs:
           author_email: github-actions@github.com
           message: 'chore: generate Pac-Man contribution graph'
           add: './output/*.svg'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
