@@ -1,0 +1,28 @@
+name: Generate Pacman Contribution Graph
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"  # Runs every 6 hours
+  workflow_dispatch:
+
+jobs:
+  generate-snk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate the snake animation
+        uses: Platane/snk@v3
+        with:
+          github_user_name: omevi2079
+          outputs: |
+            ./output/pacman-contribution-graph.svg
+            ./output/pacman-contribution-graph-dark.svg
+
+      - name: Push the generated files
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-actions
+          author_email: github-actions@github.com
+          message: 'chore: generate Pac-Man contribution graph'
+          add: './output/*.svg'
