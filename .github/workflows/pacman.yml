@@ -19,12 +19,22 @@ jobs:
             ./output/pacman-contribution-graph.svg
             ./output/pacman-contribution-graph-dark.svg
 
-      - name: Push the generated files
-        uses: EndBug/add-and-commit@v9
-        with:
-          author_name: github-actions
-          author_email: github-actions@github.com
-          message: 'chore: generate Pac-Man contribution graph'
-          add: './output/*.svg'
+      - name: Set up Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add changes
+        run: |
+          git add ./output/*.svg
+
+      - name: Commit changes
+        run: |
+          git commit -m "chore: generate Pac-Man contribution graph" || echo "No changes to commit"
+
+      - name: Push changes
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/omevi2079/omevi2079.git
+          git push origin HEAD:main
